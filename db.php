@@ -1,5 +1,5 @@
 <?php
-
+ 
 try {
     $db = new PDO('mysql:host=localhost;dbname=plant_db', 'root', '');
 } catch (PDOException $e) {
