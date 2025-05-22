@@ -21,14 +21,15 @@ function fetchById($connection, $table, $id) {
     return $query->fetch(PDO::FETCH_ASSOC);
 }
 
-//
+/*Fonction qui récupère la liste des colonnes pour en faire un taleau associatif.
+Pour connaitre le nom des colonnes, leur type, NULL ou pas,...*/
 function getColumns($connection, $table) {
     $sql = "SELECT * FROM information_schema.COLUMNS WHERE TABLE_NAME = '".$table."'";
     $query = $connection->prepare($sql);
     $query->execute();
     return $query->fetchAll(PDO::FETCH_ASSOC);
 }
-
+//Fonction pour insérer dans la BDD lorsqu'on appuie sur "save"
 function save($connection, $table, $data) {
     $columns = array_keys($data);
     $columnsStr = implode(', ', $columns); // split ; join
@@ -46,7 +47,7 @@ function save($connection, $table, $data) {
         die;
     }
 }
-
+//Fonction pour UPDATE la BDD lors d'une modification.
 function edit($connection, $table, $data, $id) {
     $columns = array_keys($data);
     $columnsStr = implode(', ', $columns); // split ; join
@@ -75,6 +76,7 @@ function edit($connection, $table, $data, $id) {
     }
 }
 
+//Fonction pour supprimer un élément dans la BDD
 function deleteById($connection, $table, $id) {
     $query = $connection->prepare('DELETE FROM ' . $table . ' WHERE id=:id;');
     $query->bindParam(':id', $id);
