@@ -61,11 +61,19 @@ if (empty($requestUriArray)) {
 
     $str .= '</thead>';
     $str .= '<tbody>';
-
+    //Conversion du tinyint 0-1 par No-Yes
+    $columnsMeta = getColumns($db, $tableName);
+    $typesMap = [];
+    foreach ($columnsMeta as $colMeta) {
+        $typesMap[$colMeta['COLUMN_NAME']] = $colMeta['DATA_TYPE'];
+    }
     // Boucle pour les lignes
     foreach($results as $row) {
         $str .= '<tr>';
         foreach ($row as $col => $value) {
+          if (isset($typesMap[$col]) && $typesMap[$col] === 'tinyint') {
+            $value = $value == 1 ? 'Yes' : 'No';
+        }
             $str .= '<td>' . $value . '</td>';
         }
         $str .= '<td>';
@@ -163,7 +171,7 @@ if (count($requestUriArray) === 2) {
       //retour à la page principale
       header('Location: '. BASE_PATH . $model);
   }
-
+//---------------------------------------Vue détaillée d'un élément--------------------------------------
   if (ctype_digit($requestUriArray[1])) {
       // Vue "détail"
       echo 'Detail<br>';
@@ -176,8 +184,19 @@ if (count($requestUriArray) === 2) {
       }
       $id = $requestUriArray[1];
       $result = fetchById($db, $tableName, $id);
+      
+      //Conversion du tinyint 0-1 par No-Yes
+      $columnsMeta = getColumns($db, $tableName);
+      $typesMap = [];
+      foreach ($columnsMeta as $colMeta) {
+        $typesMap[$colMeta['COLUMN_NAME']] = $colMeta['DATA_TYPE'];
+      }
+
       foreach ($result as $col => $value) {
-          echo $col . ': ' . $value . '<br>';
+        if (isset($typesMap[$col]) && $typesMap[$col] === 'tinyint') {
+          $value = $value == 1 ? 'Yes' : 'No';
+        }
+        echo $col . ': ' . $value . '<br>';
       }
       die;
   }
