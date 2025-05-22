@@ -72,7 +72,7 @@ if (empty($requestUriArray)) {
         $str .= '<tr>';
         foreach ($row as $col => $value) {
           if (isset($typesMap[$col]) && $typesMap[$col] === 'tinyint') {
-            $value = $value == 1 ? 'Yes' : 'No';
+            $value = $value == 1 ? 'Oui' : 'Non';
         }
             $str .= '<td>' . $value . '</td>';
         }
@@ -184,7 +184,7 @@ if (count($requestUriArray) === 2) {
       }
       $id = $requestUriArray[1];
       $result = fetchById($db, $tableName, $id);
-      
+
       //Conversion du tinyint 0-1 par No-Yes
       $columnsMeta = getColumns($db, $tableName);
       $typesMap = [];
@@ -194,7 +194,7 @@ if (count($requestUriArray) === 2) {
 
       foreach ($result as $col => $value) {
         if (isset($typesMap[$col]) && $typesMap[$col] === 'tinyint') {
-          $value = $value == 1 ? 'Yes' : 'No';
+          $value = $value == 1 ? 'Oui' : 'Non';
         }
         echo $col . ': ' . $value . '<br>';
       }
